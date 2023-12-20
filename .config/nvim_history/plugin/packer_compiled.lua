@@ -49,8 +49,8 @@ local function save_profiles(threshold)
 end
 
 time([[Luarocks path setup]], true)
-local package_path_str = "/Users/ikenosousuke/.cache/nvim/packer_hererocks/2.1.0-beta3/share/lua/5.1/?.lua;/Users/ikenosousuke/.cache/nvim/packer_hererocks/2.1.0-beta3/share/lua/5.1/?/init.lua;/Users/ikenosousuke/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/luarocks/rocks-5.1/?.lua;/Users/ikenosousuke/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/luarocks/rocks-5.1/?/init.lua"
-local install_cpath_pattern = "/Users/ikenosousuke/.cache/nvim/packer_hererocks/2.1.0-beta3/lib/lua/5.1/?.so"
+local package_path_str = "/Users/ikenosousuke/.cache/nvim/packer_hererocks/2.1.1700008891/share/lua/5.1/?.lua;/Users/ikenosousuke/.cache/nvim/packer_hererocks/2.1.1700008891/share/lua/5.1/?/init.lua;/Users/ikenosousuke/.cache/nvim/packer_hererocks/2.1.1700008891/lib/luarocks/rocks-5.1/?.lua;/Users/ikenosousuke/.cache/nvim/packer_hererocks/2.1.1700008891/lib/luarocks/rocks-5.1/?/init.lua"
+local install_cpath_pattern = "/Users/ikenosousuke/.cache/nvim/packer_hererocks/2.1.1700008891/lib/lua/5.1/?.so"
 if not string.find(package.path, package_path_str, 1, true) then
   package.path = package.path .. ';' .. package_path_str
 end
@@ -90,6 +90,26 @@ _G.packer_plugins = {
     path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/capture.vim",
     url = "https://github.com/tyru/capture.vim"
   },
+  ["cmp-buffer"] = {
+    loaded = true,
+    path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/cmp-buffer",
+    url = "https://github.com/hrsh7th/cmp-buffer"
+  },
+  ["cmp-cmdline"] = {
+    loaded = true,
+    path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/cmp-cmdline",
+    url = "https://github.com/hrsh7th/cmp-cmdline"
+  },
+  ["cmp-nvim-lsp"] = {
+    loaded = true,
+    path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
+    url = "https://github.com/hrsh7th/cmp-nvim-lsp"
+  },
+  ["cmp-path"] = {
+    loaded = true,
+    path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/cmp-path",
+    url = "https://github.com/hrsh7th/cmp-path"
+  },
   ["coc.nvim"] = {
     loaded = true,
     path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/coc.nvim",
@@ -121,6 +141,21 @@ _G.packer_plugins = {
     path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/opt/glow.nvim",
     url = "https://github.com/npxbr/glow.nvim"
   },
+  ["lspkind.nvim"] = {
+    loaded = true,
+    path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/lspkind.nvim",
+    url = "https://github.com/onsails/lspkind.nvim"
+  },
+  ["mason.nvim"] = {
+    loaded = true,
+    path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/mason.nvim",
+    url = "https://github.com/williamboman/mason.nvim"
+  },
+  ["nvim-cmp"] = {
+    loaded = true,
+    path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/nvim-cmp",
+    url = "https://github.com/hrsh7th/nvim-cmp"
+  },
   ["nvim-treesitter"] = {
     loaded = true,
     path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/nvim-treesitter",
@@ -142,10 +177,10 @@ _G.packer_plugins = {
     path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
-  ["seiya.vim"] = {
+  ["previm.vim"] = {
     loaded = true,
-    path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/seiya.vim",
-    url = "https://github.com/miyakogi/seiya.vim"
+    path = "/Users/ikenosousuke/.local/share/nvim/site/pack/packer/start/previm.vim",
+    url = "https://github.com/previm/previm.vim"
   },
   ["telescope.nvim"] = {
     loaded = true,
@@ -207,6 +242,13 @@ time([[Conditional loading of vim-fontzoom]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
+pcall(vim.api.nvim_create_user_command, 'GitMessenger', function(cmdargs)
+          require('packer.load')({'git-messenger.vim'}, { cmd = 'GitMessenger', l1 = cmdargs.line1, l2 = cmdargs.line2, bang = cmdargs.bang, args = cmdargs.args, mods = cmdargs.mods }, _G.packer_plugins)
+        end,
+        {nargs = '*', range = true, bang = true, complete = function()
+          require('packer.load')({'git-messenger.vim'}, {}, _G.packer_plugins)
+          return vim.fn.getcompletion('GitMessenger ', 'cmdline')
+      end})
 pcall(vim.api.nvim_create_user_command, 'Glow', function(cmdargs)
           require('packer.load')({'glow.nvim'}, { cmd = 'Glow', l1 = cmdargs.line1, l2 = cmdargs.line2, bang = cmdargs.bang, args = cmdargs.args, mods = cmdargs.mods }, _G.packer_plugins)
         end,
@@ -220,13 +262,6 @@ pcall(vim.api.nvim_create_user_command, 'GlowInstall', function(cmdargs)
         {nargs = '*', range = true, bang = true, complete = function()
           require('packer.load')({'glow.nvim'}, {}, _G.packer_plugins)
           return vim.fn.getcompletion('GlowInstall ', 'cmdline')
-      end})
-pcall(vim.api.nvim_create_user_command, 'GitMessenger', function(cmdargs)
-          require('packer.load')({'git-messenger.vim'}, { cmd = 'GitMessenger', l1 = cmdargs.line1, l2 = cmdargs.line2, bang = cmdargs.bang, args = cmdargs.args, mods = cmdargs.mods }, _G.packer_plugins)
-        end,
-        {nargs = '*', range = true, bang = true, complete = function()
-          require('packer.load')({'git-messenger.vim'}, {}, _G.packer_plugins)
-          return vim.fn.getcompletion('GitMessenger ', 'cmdline')
       end})
 time([[Defining lazy-load commands]], false)
 
@@ -243,8 +278,8 @@ vim.cmd [[au FileType go ++once lua require("packer.load")({'vim-go'}, { ft = "g
 time([[Defining lazy-load filetype autocommands]], false)
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
-vim.cmd [[au FocusLost * ++once lua require("packer.load")({'vim-unimpaired'}, { event = "FocusLost *" }, _G.packer_plugins)]]
 vim.cmd [[au CursorHold * ++once lua require("packer.load")({'vim-unimpaired'}, { event = "CursorHold *" }, _G.packer_plugins)]]
+vim.cmd [[au FocusLost * ++once lua require("packer.load")({'vim-unimpaired'}, { event = "FocusLost *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
   -- Function lazy-loads
 time([[Defining lazy-load function autocommands]], true)

@@ -1,20 +1,24 @@
-require("plugins")
-require("base")
---require("nvim_cmp_config")
+if vim.loader and vim.fn.has "nvim-0.9.1" == 1 then vim.loader.enable() end
 
-require'nvim-treesitter.configs'.setup {
-  ---- If you need to change the installation directory of the parsers (see -> Advanced Setup)
-  -- parser_install_dir = "/some/path/to/store/parsers", -- Remember to run vim.opt.runtimepath:append("/some/path/to/store/parsers")!
+for _, source in ipairs {
+  "astronvim.bootstrap",
+  "astronvim.options",
+  "astronvim.lazy",
+  "astronvim.autocmds",
+  "astronvim.mappings",
+} do
+  local status_ok, fault = pcall(require, source)
+  if not status_ok then vim.api.nvim_err_writeln("Failed to load " .. source .. "\n\n" .. fault) end
+end
 
-  highlight = {
-    enable = true,
+if astronvim.default_colorscheme then
+  if not pcall(vim.cmd.colorscheme, astronvim.default_colorscheme) then
+    require("astronvim.utils").notify(
+      ("Error setting up colorscheme: `%s`"):format(astronvim.default_colorscheme),
+      vim.log.levels.ERROR
+    )
+  end
+end
 
-
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    additional_vim_regex_highlighting = false,
-  },
-}
+require("astronvim.utils").conditional_func(astronvim.user_opts("polish", nil, false), true)
 
