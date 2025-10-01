@@ -1,4 +1,6 @@
 {
   "is-bot": false,
-  "license-hash": "3e8c85e63b26ce223cda96a9a8fbb410"
+  "license-hash": "595d1dceffbb08773627ff5766d17ddf",
+  "last-active-stable-version": "90c64ed42ba53a52d18f0cb3b17666c8662ed2a0",
+  "redisplay-welcome-message": true
 }
