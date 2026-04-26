@@ -1,0 +1,3 @@
+theme = Blue Dolphin
+keybind = global:cmd=toggle_quick_terminal
+
