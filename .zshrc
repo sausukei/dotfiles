@@ -32,8 +32,12 @@
 ### End of Zinit's installer chunk
 
 export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+export PATH="$PYENV_ROOT/bin:$PYENV_ROOT/shims:$PATH"
+pyenv() {
+  unfunction pyenv
+  eval "$(command pyenv init -)"
+  pyenv "$@"
+}
 
 
 SCRIPT_DIR=$HOME/dotfiles
@@ -54,7 +58,13 @@ function peco-history-selection() {
 zle -N peco-history-selection
 bindkey '^R' peco-history-selection
 
-eval "$(starship init zsh)"
+_starship_cache="$HOME/.cache/zsh/starship_init.zsh"
+if [[ ! -s $_starship_cache ]] || [[ $(command -v starship) -nt $_starship_cache ]]; then
+  mkdir -p "${_starship_cache:h}"
+  starship init zsh > "$_starship_cache"
+fi
+source "$_starship_cache"
+unset _starship_cache
 
 # To customize prompt, run `p10k configure` or edit ~/dotfiles/zsh/p10k.zsh.
 # [[ ! -f ~/dotfiles/zsh/p10k.zsh ]] || source ~/dotfiles/zsh/p10k.zsh
