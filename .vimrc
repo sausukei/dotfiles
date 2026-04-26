@@ -1,1 +1,2 @@
-inoremap jk :esc 
+set number
+inoremap jk <esc>
