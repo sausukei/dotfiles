@@ -25,10 +25,3 @@ dist-ssr
 *.sln
 *.sw?
 
-flutter
-fonts
-github-copilot
-gh
-yarn
-coc
-.isolated-storage
